@@ -5,7 +5,7 @@ import { getAllProducts } from "@/services/Product";
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
-const AllProductsPage = async ({
+const AllRentalHousePage = async ({
   searchParams,
 }: {
   searchParams: SearchParams;
@@ -23,4 +23,4 @@ const AllProductsPage = async ({
   );
 };
 
-export default AllProductsPage;
+export default AllRentalHousePage;

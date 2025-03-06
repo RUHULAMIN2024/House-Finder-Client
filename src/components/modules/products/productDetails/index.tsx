@@ -1,9 +1,43 @@
+"use client";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { addrequest } from "@/services/Request";
 import { IProduct } from "@/types";
 import { Star } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
+import { toast } from "sonner";
 
 const ProductDetails = ({ product }: { product: IProduct }) => {
+  const [requestMessage, setRequestMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleRentRequest = async () => {
+    try {
+      const res = await addrequest({
+        listingId: product?._id,
+        message: requestMessage,
+      });
+      if (res.success) {
+        setLoading(false);
+        console.error(res);
+
+        toast.success(res.message);
+      } else {
+        toast.error(res.message);
+      }
+    } catch (err: any) {
+      setLoading(false);
+      toast.error(err?.message);
+
+      console.error(err);
+    }
+  };
   return (
     <div className="grid grid-cols-2 gap-4 border border-white p-4 rounded-md my-5 shadow-sm">
       <div>
@@ -51,10 +85,34 @@ const ProductDetails = ({ product }: { product: IProduct }) => {
         </p>
         <hr />
 
-        <Button variant="outline" className="w-full my-5">
-          Add To Cart
-        </Button>
-        <Button className="w-full">Buy Now</Button>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button size="lg" variant="default" className="mt-5 w-full">
+              Rent Request
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="p-4">
+            <DialogTitle className="text-lg font-semibold">
+              Send Rental Request
+            </DialogTitle>
+            <textarea
+              className="w-full mt-2 p-2 border rounded"
+              placeholder="Enter move-in date, duration, and any special requests..."
+              value={requestMessage}
+              onChange={(e) => setRequestMessage(e.target.value)}
+            ></textarea>
+            <div className="flex justify-end gap-2 mt-4">
+              <Button
+                variant="default"
+                onClick={handleRentRequest}
+                disabled={loading}
+                className="w-full"
+              >
+                {loading ? "Submitting..." : "Submit Request"}
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );

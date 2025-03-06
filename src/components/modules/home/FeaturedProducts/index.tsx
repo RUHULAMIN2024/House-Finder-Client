@@ -14,7 +14,7 @@ const FeaturedProducts = async () => {
       <NMContainer className="my-16">
         <div className="flex items-center justify-between ">
           <h2 className="text-3xl font-bold">Featured Rental House</h2>
-          <Link href="/rental-houses">
+          <Link href="/rental-house">
             <Button variant="outline" className="rounded-full">
               All Collection
             </Button>

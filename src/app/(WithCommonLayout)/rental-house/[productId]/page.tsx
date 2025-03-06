@@ -11,6 +11,7 @@ const ProductDetailsPage = async ({
   const { productId } = await params;
 
   const { data: product } = await getSingleProduct(productId);
+  console.log(product, productId);
 
   return (
     <NMContainer>

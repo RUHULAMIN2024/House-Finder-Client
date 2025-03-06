@@ -9,9 +9,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { IProduct } from "@/types";
-import { Heart, KeyRound, Star, MapPin, Bed } from "lucide-react";
+import { Star, MapPin, Bed } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { addrequest } from "@/services/Request";
@@ -98,28 +103,17 @@ const ProductCard = ({ product }: { product: IProduct }) => {
             View Details
           </Button>
         </Link>
-        <Button
-          variant="outline"
-          size="sm"
-          className="w-8 h-8 p-0 flex items-center justify-center rounded-full"
-        >
-          <KeyRound />
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          className="w-8 h-8 p-0 flex items-center justify-center rounded-full"
-        >
-          <Heart />
-        </Button>
+
         <Dialog>
           <DialogTrigger asChild>
-            <Button size="sm" variant="default" className="w-32">
+            <Button size="sm" variant="default" className="w-full">
               Rent Request
             </Button>
           </DialogTrigger>
+          <DialogTitle className="text-lg font-semibold">
+            Send Rental Request
+          </DialogTitle>
           <DialogContent className="p-4">
-            <h2 className="text-lg font-semibold">Send Rental Request</h2>
             <textarea
               className="w-full mt-2 p-2 border rounded"
               placeholder="Enter move-in date, duration, and any special requests..."
@@ -127,7 +121,6 @@ const ProductCard = ({ product }: { product: IProduct }) => {
               onChange={(e) => setRequestMessage(e.target.value)}
             ></textarea>
             <div className="flex justify-end gap-2 mt-4">
-              <Button variant="outline">Cancel</Button>
               <Button
                 variant="default"
                 onClick={handleRentRequest}

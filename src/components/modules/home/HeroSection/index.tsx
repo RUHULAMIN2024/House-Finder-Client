@@ -22,16 +22,8 @@ const HeroSection = () => {
               essentials, fashion, and more! Limited stock.
             </p>
 
-            <Link href="/add-rental-house">
-              <Button size="lg" className="mr-5 rounded-full">
-                Add Rental House
-              </Button>
-            </Link>
             <Link href="/rental-house">
-              <Button
-                size="lg"
-                className="rounded-full bg-white text-black hover:bg-gray-100"
-              >
+              <Button size="lg" className="rounded-full">
                 All Rental Houses
               </Button>
             </Link>
