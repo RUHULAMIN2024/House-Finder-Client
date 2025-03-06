@@ -20,7 +20,7 @@ const FeaturedProducts = async () => {
             </Button>
           </Link>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-10">
           {products?.slice(0, 5).map((product: IProduct, idx: number) => (
             <ProductCard key={idx} product={product} />
           ))}

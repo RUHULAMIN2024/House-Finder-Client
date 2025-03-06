@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "../ui/button";
-import { Heart, LogOut } from "lucide-react";
+import { LogOut } from "lucide-react";
 import Link from "next/link";
 import {
   DropdownMenu,
@@ -29,29 +29,82 @@ export default function Navbar() {
     }
   };
 
+  const navlink = (
+    <>
+      <li
+        className={
+          pathname === "/"
+            ? "font-bold py-2 md:px-0 px-4 text-blue-500"
+            : "py-2 md:px-0 px-4 hover:font-bold cursor-pointer"
+        }
+      >
+        <Link href="/">Home</Link>
+      </li>
+      <li
+        className={
+          pathname === "/about-us"
+            ? "font-bold py-2 md:px-0 px-4 text-blue-500"
+            : "py-2 md:px-0 px-4 hover:font-bold cursor-pointer"
+        }
+      >
+        <Link href="/about-us">AboutUs</Link>
+      </li>
+      <li
+        className={
+          pathname === "/rental-house"
+            ? "font-bold py-2 md:px-0 px-4 text-blue-500"
+            : "py-2 md:px-0 px-4 hover:font-bold cursor-pointer"
+        }
+      >
+        <Link href="/rental-house">RentalHouse</Link>
+      </li>
+    </>
+  );
+
   return (
     <header className="border-b bg-background w-full sticky top-0 z-10">
       <div className="container flex justify-between items-center mx-auto h-16 px-5">
-        <Link href="/">
-          <h1 className="text-2xl font-black flex items-center">
-            House Finder
-          </h1>
-        </Link>
-        <div className="max-w-md hidden md:inline-block  flex-grow">
-          <input
-            type="text"
-            placeholder="Search for products"
-            className="w-full max-w-6xl border border-gray-300 rounded-full py-2 px-5"
-          />
-        </div>
-        <nav className="flex gap-2">
-          <Button variant="outline" className="rounded-full p-0 size-10">
-            <Heart />
-          </Button>
-          <Link href="/create-listing">
-            <Button className="rounded-full">Create Shop</Button>
+        <div className="flex items-center">
+          <div className="relative lg:hidden">
+            <div
+              tabIndex={0}
+              role="button"
+              className="p-2 rounded-md hover:bg-gray-100 focus:outline-none"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 6h16M4 12h8m-8 6h16"
+                />
+              </svg>
+            </div>
+            <ul
+              tabIndex={0}
+              className="absolute mt-3 z-10 p-2 shadow-md bg-white rounded-md w-52"
+            >
+              {navlink}
+            </ul>
+          </div>
+          <Link href="/">
+            <h1 className="text-2xl font-black flex items-center">
+              House Finder
+            </h1>
           </Link>
+        </div>
 
+        <div className="hidden lg:flex">
+          <ul className="flex space-x-6 text-gray-800">{navlink}</ul>
+        </div>
+
+        <nav className="flex gap-2">
           {user?.email ? (
             <>
               <DropdownMenu>

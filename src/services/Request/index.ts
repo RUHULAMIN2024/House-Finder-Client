@@ -40,15 +40,22 @@ export const getSingleRequest = async (requestId: string) => {
 };
 
 // add request
-export const addrequest = async (requestData: FormData): Promise<any> => {
+export const addrequest = async (requestData: {
+  listingId: string;
+  message: string;
+}): Promise<any> => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/request`, {
-      method: "POST",
-      body: requestData,
-      headers: {
-        Authorization: (await cookies()).get("accessToken")!.value,
-      },
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_API}/tenant/request`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: (await cookies()).get("accessToken")!.value,
+        },
+        body: JSON.stringify(requestData),
+      }
+    );
     revalidateTag("request");
     return res.json();
   } catch (error: any) {
