@@ -1,5 +1,7 @@
 "use server";
 
+import { cookies } from "next/headers";
+
 // get all products
 export const fetchTenantRequests = async () => {
   try {
@@ -8,6 +10,9 @@ export const fetchTenantRequests = async () => {
       {
         next: {
           tags: ["REQUEST"],
+        },
+        headers: {
+          Authorization: (await cookies()).get("accessToken")!.value,
         },
       }
     );

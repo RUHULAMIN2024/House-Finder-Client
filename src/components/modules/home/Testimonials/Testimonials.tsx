@@ -36,7 +36,7 @@ const testimonials = [
 ];
 const Testimonials = () => {
   return (
-    <NMContainer className="my-36">
+    <NMContainer className="my-28">
       <h2 className="text-3xl font-bold mb-10">What Our Users Say</h2>
       <div className="grid items-center grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-3">
         {testimonials.map((testimonial, index) => (

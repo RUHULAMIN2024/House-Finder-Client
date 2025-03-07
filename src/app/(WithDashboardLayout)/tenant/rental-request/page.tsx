@@ -45,7 +45,7 @@ const TenantDashboard = () => {
             <p className="text-center text-gray-600 py-6">Loading...</p>
           ) : error ? (
             <p className="text-center text-red-600 py-6">{error}</p>
-          ) : requests.length > 0 ? (
+          ) : requests?.length > 0 ? (
             <Table>
               <TableHeader>
                 <TableRow className="bg-gray-100">
