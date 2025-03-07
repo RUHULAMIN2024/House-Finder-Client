@@ -1,29 +1,32 @@
 "use client";
 
 import { NMTable } from "@/components/ui/core/NMTable/index";
-import { IMeta, IUser } from "@/types";
+import { IMeta, IProduct } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
-import { Plus, Trash } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import { Trash } from "lucide-react";
+import Image from "next/image";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useState } from "react";
 import TablePagination from "@/components/ui/core/NMTable/TablePagination";
 import { toast } from "sonner";
-import { deleteUser } from "@/services/User";
+import { deleteProduct } from "@/services/admin";
 
-const ManageUser = ({ users, meta }: { users: IUser[]; meta: IMeta }) => {
-  const router = useRouter();
+const ManageHouses = ({
+  products,
+  meta,
+}: {
+  products: IProduct[];
+  meta: IMeta;
+}) => {
   const [selectedIds, setSelectedIds] = useState<string[] | []>([]);
 
-  const handleDelete = async (userId: string) => {
-    const res = await deleteUser(userId);
+  const handleDelete = async (productId: string) => {
+    const res = await deleteProduct(productId);
     if (res.success) {
       toast.success(res.message);
     }
   };
-
-  const columns: ColumnDef<IUser>[] = [
+  const columns: ColumnDef<IProduct>[] = [
     {
       id: "select",
       header: ({ table }) => (
@@ -57,31 +60,36 @@ const ManageUser = ({ users, meta }: { users: IUser[]; meta: IMeta }) => {
     },
 
     {
-      accessorKey: "name",
-      header: "Name",
+      accessorKey: "title",
+      header: "Product Title",
       cell: ({ row }) => (
         <div className="flex items-center space-x-3">
-          <span className="truncate">{row.original.name}</span>
+          <Image
+            src={row.original.images[0]}
+            alt={row.original.title}
+            width={40}
+            height={40}
+            className="w-8 h-8 rounded-full"
+          />
+          <span className="truncate">{row.original.title}</span>
         </div>
       ),
     },
     {
-      accessorKey: "email",
-      header: "Email",
-      cell: ({ row }) => <span>{row.original.email}</span>,
+      accessorKey: "location",
+      header: "Location",
+      cell: ({ row }) => <span>{row.original.location}</span>,
     },
     {
-      accessorKey: "role",
-      header: "Role",
-      cell: ({ row }) => <span>{row.original.role}</span>,
+      accessorKey: "bedrooms",
+      header: "Bedrooms",
+      cell: ({ row }) => <span>{row.original.bedrooms}</span>,
     },
 
     {
-      accessorKey: "isActive",
-      header: "IsActive",
-      cell: ({ row }) => (
-        <span> {row.original?.isActive ? "True" : "False"}</span>
-      ),
+      accessorKey: "rentAmount",
+      header: "Rental Amount",
+      cell: ({ row }) => <span>$ {row.original.rentAmount.toFixed(2)}</span>,
     },
 
     {
@@ -104,12 +112,12 @@ const ManageUser = ({ users, meta }: { users: IUser[]; meta: IMeta }) => {
   return (
     <div>
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold">Manage Users</h1>
+        <h1 className="text-xl font-bold">Manage Rental House</h1>
       </div>
-      <NMTable columns={columns} data={users || []} />
+      <NMTable columns={columns} data={products || []} />
       <TablePagination totalPage={meta?.totalPage} />
     </div>
   );
 };
 
-export default ManageUser;
+export default ManageHouses;

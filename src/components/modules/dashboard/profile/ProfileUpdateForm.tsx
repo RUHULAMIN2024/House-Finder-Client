@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { useState } from "react";
-import { updateProfile } from "@/services/User";
+import { updateProfile, updatePassword } from "@/services/User";
 import { useUser } from "@/context/UserContext";
 import { toast } from "sonner";
 import NMImageUploader from "@/components/ui/core/NMImageUploader";
@@ -25,7 +25,12 @@ const ProfileUpdateForm = () => {
   const [imagePreview, setImagePreview] = useState<string[] | []>([]);
 
   const form = useForm({
-    defaultValues: { ...user },
+    defaultValues: {
+      ...user,
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    },
   });
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
@@ -38,7 +43,6 @@ const ProfileUpdateForm = () => {
       }
 
       const response = await updateProfile(formData);
-      console.log(response);
       if (response.success) {
         toast.success("Profile updated successfully!");
       }
@@ -46,6 +50,29 @@ const ProfileUpdateForm = () => {
       toast.error("Something went wrong while updating your profile.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const onPasswordUpdate: SubmitHandler<FieldValues> = async (data) => {
+    if (data.newPassword !== data.confirmPassword) {
+      toast.error("New passwords do not match!");
+      return;
+    }
+
+    try {
+      const response = await updatePassword(
+        data.currentPassword,
+        data.newPassword
+      );
+
+      if (response.success) {
+        toast.success("Password updated successfully!");
+        form.resetField("currentPassword");
+        form.resetField("newPassword");
+        form.resetField("confirmPassword");
+      }
+    } catch (error) {
+      toast.error("Failed to update password. Please try again.");
     }
   };
 
@@ -95,9 +122,9 @@ const ProfileUpdateForm = () => {
               )}
             />
           </div>
+
           <div className="my-5">
             <FormLabel>Profile Photo</FormLabel>
-
             {imagePreview.length > 0 ? (
               <ImagePreviewer
                 setImageFiles={setImageFiles}
@@ -110,7 +137,7 @@ const ProfileUpdateForm = () => {
                 <NMImageUploader
                   setImageFiles={setImageFiles}
                   setImagePreview={setImagePreview}
-                  label="Upload Logo"
+                  label="Upload Photo"
                 />
               </div>
             )}
@@ -121,6 +148,60 @@ const ProfileUpdateForm = () => {
           </Button>
         </form>
       </Form>
+
+      {/* Password Update Section */}
+      <div className="mt-8">
+        <h2 className="text-xl font-semibold mb-5">Change Password</h2>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onPasswordUpdate)}>
+            <FormField
+              control={form.control}
+              name="currentPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Current Password</FormLabel>
+                  <FormControl>
+                    <Input type="password" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="newPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>New Password</FormLabel>
+                  <FormControl>
+                    <Input type="password" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Confirm New Password</FormLabel>
+                  <FormControl>
+                    <Input type="password" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <Button type="submit" className="mt-5 w-full">
+              Update Password
+            </Button>
+          </form>
+        </Form>
+      </div>
     </div>
   );
 };

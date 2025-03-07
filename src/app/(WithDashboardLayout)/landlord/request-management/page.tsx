@@ -13,7 +13,6 @@ import { IRequest } from "@/types";
 
 const RequestManagement = async () => {
   const { data } = await getAllRequest();
-  console.log(data);
 
   return (
     <div>
@@ -32,7 +31,7 @@ const RequestManagement = async () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data.map((req: IRequest) => (
+              {data?.map((req: IRequest) => (
                 <RequestTableRow req={req} key={req._id} />
               ))}
             </TableBody>

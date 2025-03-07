@@ -106,11 +106,11 @@ const ProductCard = ({ product }: { product: IProduct }) => {
 
         <Dialog>
           <DialogTrigger asChild>
-            <Button size="sm" variant="default" className="w-full">
+            <Button size="sm" variant="default" className="w-38">
               Rent Request
             </Button>
           </DialogTrigger>
-          <DialogTitle className="text-lg font-semibold">
+          <DialogTitle className="text-lg hidden font-semibold">
             Send Rental Request
           </DialogTitle>
           <DialogContent className="p-4">

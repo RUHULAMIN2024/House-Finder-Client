@@ -1,3 +1,4 @@
+"use client";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Table,
@@ -12,9 +13,27 @@ import Link from "next/link";
 import { fetchTenantRequests } from "@/services/tenant";
 import { IRequest } from "@/types";
 import { CreditCardIcon } from "lucide-react";
+import { useState, useEffect } from "react";
 
-const TenantDashboard = async () => {
-  const { data } = await fetchTenantRequests();
+const TenantDashboard = () => {
+  const [requests, setRequests] = useState<IRequest[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>("");
+
+  useEffect(() => {
+    const loadTenantRequests = async () => {
+      try {
+        const { data } = await fetchTenantRequests();
+        setRequests(data);
+      } catch (err) {
+        setError("Failed to load rental requests.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadTenantRequests();
+  }, []);
 
   return (
     <div>
@@ -22,7 +41,11 @@ const TenantDashboard = async () => {
 
       <Card className="shadow-lg border">
         <CardContent className="p-4">
-          {data.length > 0 ? (
+          {loading ? (
+            <p className="text-center text-gray-600 py-6">Loading...</p>
+          ) : error ? (
+            <p className="text-center text-red-600 py-6">{error}</p>
+          ) : requests.length > 0 ? (
             <Table>
               <TableHeader>
                 <TableRow className="bg-gray-100">
@@ -35,7 +58,7 @@ const TenantDashboard = async () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {data.map((request: IRequest) => (
+                {requests.map((request: IRequest) => (
                   <TableRow key={request._id} className="border-b">
                     <TableCell className="font-medium">
                       {request.listingId?.title || "N/A"}
@@ -64,7 +87,6 @@ const TenantDashboard = async () => {
                       {request.status === "approved" ? (
                         <Link href={`/payment/${request._id}`}>
                           <Button size="sm">
-                            {" "}
                             <CreditCardIcon className="w-4 h-4" />
                             Payment
                           </Button>

@@ -1,4 +1,4 @@
-import ManageHouses from "@/components/modules/dashboard/landlord/ManageHouses";
+import ManageHouses from "@/components/modules/dashboard/admin/ManageHouses";
 import { getAllProducts } from "@/services/Product";
 
 const HousesManagement = async ({
@@ -8,7 +8,7 @@ const HousesManagement = async ({
 }) => {
   const { page } = await searchParams;
 
-  const { data, meta } = await getAllProducts(page, "3");
+  const { data, meta } = await getAllProducts(page, "10");
   return (
     <div>
       <ManageHouses products={data} meta={meta} />

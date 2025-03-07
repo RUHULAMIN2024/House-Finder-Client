@@ -27,10 +27,13 @@ export const getAllProducts = async (
 
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_API}/listing?limit=${limit}&page=${page}&${params}`,
+      `${process.env.NEXT_PUBLIC_BASE_API}/landlord/listing?limit=${limit}&page=${page}&${params}`,
       {
         next: {
           tags: ["PRODUCT"],
+        },
+        headers: {
+          Authorization: (await cookies()).get("accessToken")!.value,
         },
       }
     );

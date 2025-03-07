@@ -7,7 +7,6 @@ import Link from "next/link";
 
 const FeaturedProducts = async () => {
   const { data: products } = await getAllProducts();
-  console.log(products);
 
   return (
     <div className=" bg-white bg-opacity-50 pt-6 pb-8">
@@ -20,7 +19,7 @@ const FeaturedProducts = async () => {
             </Button>
           </Link>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
           {products?.slice(0, 5).map((product: IProduct, idx: number) => (
             <ProductCard key={idx} product={product} />
           ))}
